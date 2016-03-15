@@ -1,0 +1,113 @@
+FORMAT: 1A
+HOST: http://polls.apiblueprint.org/
+
+# blogs
+
+
+## Blogs Collection
+
+### List All Blogs [GET: /blog_app/api/blogs/]
+
++ Response 200 (application/json)
+
+        [
+            {
+                "id": 1,
+                "title": "How to blog?",
+                "seq": "[1,2]"
+            },
+            {
+                "id": 2,
+                "title": "book review",
+                "seq": "[1,2]"
+            }
+        ]
+
+### Create New/Update Blog [POST: /blog_app/api/blogs/]
+
+You may create your own blog using this action. It takes a JSON
+object containing a title and text. "\n\n" represents a new paragraph.
+If title exists then the blog is updated
+
++ Request (application/json)
+
+        {
+            "title": "How to blog?",
+            "text": "hello\n\nworld"
+        }
+
++ Response 201 (application/json)
+
+        {
+            "status": "success"
+            "message": "New Blog created"
+        }
+            
++ Response 400_BAD_REQUEST (application/json)
+
+        {
+            "status": "fail"
+            "message": "UNIQUE constraint failed"
+        }
+
+### Detail view of Blog [GET: /blog_app/api/blogs/1]
+
++ Response 200 (application/json)
+
+        {
+            "blog_id": 1,
+            "blog_title": "abc_next",
+            "paragraphs": [
+                {
+                    "text": "first",
+                    "id": 45,
+                    "comments": [
+                        {
+                            "comment": "hi",
+                            "id": 5
+                        }
+                    ]
+                },
+                {
+                    "text": "second",
+                    "id": 46,
+                    "comments": [
+                        {
+                            "comment": "hi2",
+                            "id": 6
+                        }
+                    ]
+                }
+            ]
+        }
+
+### Create a Comment in Blog [POST: /blog_app/api/blogs/1]
+
+You may write a comment for a paragraph using this action. frontend will send me the id of the paragraph. (the ids are sent in the GET api of the same endpoint) 
+
++ Request (application/json)
+
+        {
+            "blog_id": 1,
+            "comments": [
+                {
+                    "4":"comment 1"
+                },{
+                    "5":"comment 2"
+                }
+            ]
+        }
+
++ Response 201 (application/json)
+
+        {
+            "status": "success"
+            "message": "Comment successfully added"
+        }
+            
++ Response 400_BAD_REQUEST (application/json)
+
+        {
+            "status": "fail"
+            "message": "UNIQUE constraint failed"
+        }
