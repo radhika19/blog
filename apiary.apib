@@ -1,15 +1,18 @@
-
 # blogs
 
 
 ## Blogs Collection
 
-### List All Blogs [GET: /blog_app/api/blogs/]
+### List All Blogs [GET: /blog_app/api/blogs/?page=1]
+PAGE_SIZE = 5
 
 + Response 200 (application/json)
 
-        [
-            {
+        {
+            "count": 2,
+            "next": "http://127.0.0.1:8000/blog_app/api/blogs/?page=2",
+            "previous": null,
+            "results":[{
                 "id": 1,
                 "title": "How to blog?",
                 "seq": "[1,2]"
@@ -18,8 +21,8 @@
                 "id": 2,
                 "title": "book review",
                 "seq": "[4,5]"
-            }
-        ]
+            }]
+        }
 
 ### Create New/Update Blog [POST: /blog_app/api/blogs/]
 
