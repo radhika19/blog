@@ -6,14 +6,17 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from blog_app.models import Blog, Paragraph, Comment
 from blog_app.serializer import BlogSerializer
+from rest_framework.pagination import PageNumberPagination
 
 @api_view(['GET', 'POST'])
 def blogs_list(request):
     "GET: displays all the blogs POST: take a new blog as I/P (or) modified text"
     if request.method == 'GET':
         blogs = Blog.objects.all()
-        serializer = BlogSerializer(blogs, many=True)
-        return Response(serializer.data)
+        pages = PageNumberPagination()
+        page_data = pages.paginate_queryset(blogs, request)
+        serializer = BlogSerializer(page_data, many=True)
+        return pages.get_paginated_response(serializer.data)
     elif request.method == 'POST':
         data = request.data
         title = data.pop('title')
